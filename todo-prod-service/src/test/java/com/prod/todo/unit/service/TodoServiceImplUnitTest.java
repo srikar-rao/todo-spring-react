@@ -70,18 +70,19 @@ class TodoServiceImplUnitTest {
         TodoEntity entity = new TodoEntity();
         Todo expectedTodo = new Todo();
 
-        when(todoRepository.findById(id)).thenReturn(Optional.of(entity));
-        when(modelMapper.map(entity, Todo.class)).thenReturn(expectedTodo);
+        when(todoRepository.findByIdWithTasks(id)).thenReturn(Optional.of(entity));
+        when(modelMapper.map(any(TodoEntity.class), eq(Todo.class))).thenReturn(expectedTodo);
 
         Todo result = todoService.getTodoById(id);
 
         assertThat(result).isEqualTo(expectedTodo);
-        verify(todoRepository).findById(id);
+        verify(todoRepository).findByIdWithTasks(id);
     }
 
     @Test
     @DisplayName("Should save and return new Todo")
     void saveTodo_ShouldSaveAndReturnMappedTodo() {
+        String userId = "123";
         Todo input = new Todo();
         TodoEntity entityToSave = new TodoEntity();
         TodoEntity savedEntity = new TodoEntity();
