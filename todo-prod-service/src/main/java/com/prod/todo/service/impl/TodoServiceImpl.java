@@ -44,6 +44,11 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
+    public List<Todo> getAllTodosByUserId(String userId) {
+        return todoMapper.toModelListWithLocale(todoRepository.findByUserId(userId));
+    }
+
+    @Override
     public Todo getTodoById(Long id) {
         TodoEntity todoEntity = todoRepository.findByIdWithTasks(id).orElse(new TodoEntity());
         return modelMapper.map(todoEntity, Todo.class);
@@ -97,7 +102,7 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     @Retryable(
-            retryFor = { OptimisticLockException.class, CannotAcquireLockException.class, PessimisticLockingFailureException.class },
+            retryFor = {OptimisticLockException.class, CannotAcquireLockException.class, PessimisticLockingFailureException.class},
             maxAttempts = 3,
             backoff = @Backoff(delay = 1000)
     )
@@ -108,7 +113,7 @@ public class TodoServiceImpl implements TodoService {
     )
     public Todo update(Todo todo) {
         Optional<TodoEntity> optEntity = todoRepository.findById(todo.getId());
-        if(optEntity.isPresent()){
+        if (optEntity.isPresent()) {
             TodoEntity todoEntity = optEntity.get();
             todoEntity.setTitle(todo.getTitle());
             todoEntity.setDescription(todo.getDescription());
@@ -116,7 +121,8 @@ public class TodoServiceImpl implements TodoService {
             todoEntity.setCompleted(todo.isCompleted());
             TodoEntity saved = todoRepository.saveAndFlush(todoEntity);
             return todoMapper.toModelWithLocale(saved);
-        }else return new Todo();
+        } else return new Todo();
     }
+
 
 }

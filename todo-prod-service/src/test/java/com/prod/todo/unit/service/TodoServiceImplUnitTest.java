@@ -82,6 +82,7 @@ class TodoServiceImplUnitTest {
     @Test
     @DisplayName("Should save and return new Todo")
     void saveTodo_ShouldSaveAndReturnMappedTodo() {
+        String userId = "123";
         Todo input = new Todo();
         TodoEntity entityToSave = new TodoEntity();
         TodoEntity savedEntity = new TodoEntity();

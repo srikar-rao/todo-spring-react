@@ -38,6 +38,23 @@ public class TodoController {
     }
 
     @Operation(
+            summary = "Fetch all todos based on userId",
+            description = "Retrieves a list of all existing todo items based on userId."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved list of todos",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = Todo.class))),
+            @ApiResponse(responseCode = "404", description = "Todo not found",
+                    content = @Content)
+    })
+
+    @GetMapping(value = "/user/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Todo> getAllTodosByUserId(@PathVariable String userId) {
+        return todoService.getAllTodosByUserId(userId);
+    }
+
+    @Operation(
             summary = "Get todo by ID",
             description = "Retrieves a single todo item based on its unique ID."
     )

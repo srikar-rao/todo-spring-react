@@ -17,4 +17,6 @@ public interface TodoService {
     ResponseStatus deleteTodo(Long id);
 
     Todo update(Todo todo);
+
+    List<Todo> getAllTodosByUserId(String userId);
 }

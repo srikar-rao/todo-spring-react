@@ -18,6 +18,10 @@ public interface TodoRepository extends JpaRepository<TodoEntity, Long> {
     @ReadOnlyQuery
     List<TodoEntity> findAllWithTasks();
 
+    @Query("SELECT t FROM TodoEntity t LEFT JOIN FETCH t.tasks WHERE t.userId = :userId")
+    List<TodoEntity> findByUserId(String userId);
+
+
     @EntityGraph(attributePaths = {"tasks"})
     @ReadOnlyQuery
     @Query("SELECT t FROM TodoEntity t")
@@ -55,5 +59,6 @@ public interface TodoRepository extends JpaRepository<TodoEntity, Long> {
     })
     @Query("SELECT t FROM TodoEntity t WHERE t.id = :id")
     Optional<TodoEntity> findByIdWithForceVersion(@Param("id") Long id);
+
 
 }
