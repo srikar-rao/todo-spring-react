@@ -70,13 +70,13 @@ class TodoServiceImplUnitTest {
         TodoEntity entity = new TodoEntity();
         Todo expectedTodo = new Todo();
 
-        when(todoRepository.findById(id)).thenReturn(Optional.of(entity));
+        when(todoRepository.findByIdWithTasks(id)).thenReturn(Optional.of(entity));
         when(modelMapper.map(entity, Todo.class)).thenReturn(expectedTodo);
 
         Todo result = todoService.getTodoById(id);
 
         assertThat(result).isEqualTo(expectedTodo);
-        verify(todoRepository).findById(id);
+        verify(todoRepository).findByIdWithTasks(id);
     }
 
     @Test
@@ -92,7 +92,7 @@ class TodoServiceImplUnitTest {
         when(todoLogRepository.save(any())).thenReturn(Instancio.of(TodoLogEntity.class).create());
         when(todoMapper.toModelWithLocale(savedEntity)).thenReturn(expected);
 
-        Todo result = todoService.saveTodo(userId, input);
+        Todo result = todoService.saveTodo(any(), input);
 
         assertThat(result).isEqualTo(expected);
         verify(todoRepository).save(entityToSave);
