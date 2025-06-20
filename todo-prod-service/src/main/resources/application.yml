@@ -1,6 +1,6 @@
 management:
   server:
-    port: 8082  # Actuator runs on its own port (recommended for prod)
+    port: 8080  # Actuator runs on its own port (recommended for prod)
   endpoints:
     web:
       exposure:
@@ -108,6 +108,7 @@ logging:
 
 springdoc:
   swagger-ui:
+    use-root-path: true
     path: /docs
     display-request-duration: true
     persist-authorization: true
